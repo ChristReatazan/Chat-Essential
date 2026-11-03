@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>POP Validation</title>
+
+<link rel="stylesheet" href="pop.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+
+<body>
+
+<div class="pop-page">
+
+<a id="ce-back-to-chat" href="Chat.html" class="back-button">
+    ← BACK TO CHAT ESSENTIALS
+</a>
+
+<div class="pop-header">
+    <div class="eyebrow">SUPPORT DOCUMENTATION</div>
+    <h1>VALIDATION</h1>
+    <p>POF • VOF • POP Validation</p>
+</div>
+
+<div class="validation-card">
+
+<!-- CASE ID -->
+
+<label class="field-label" for="caseIdInput">CASE ID</label>
+
+<input
+    type="text"
+    id="caseIdInput"
+    class="validation-input"
+    placeholder="Example: 261007D"
+    maxlength="7"
+    autocomplete="off"
+>
+
+<div id="caseIdError" class="error-message">
+    Incorrect Case ID
+</div>
+
+<!-- VALIDATION TYPE -->
+
+<div id="validationTypeSection" class="validation-type-section" style="display:none;">
+
+<h3>What would you like to validate?</h3>
+
+<div class="validation-type-buttons">
+
+<button type="button" id="pofTypeButton" class="type-button" onclick="selectValidationType('POF')">
+    POF
+</button>
+
+<button type="button" id="vofTypeButton" class="type-button" onclick="selectValidationType('VOF')">
+    VOF
+</button>
+
+<button type="button" id="popTypeButton" class="type-button" onclick="selectValidationType('POP')">
+    POP
+</button>
+
+</div>
+</div>
+
+<!-- POF -->
+
+<div id="pofUploadSection" class="upload-section" style="display:none;">
+
+<div class="upload-title">Proof of Fault — Attach Photos</div>
+
+<div id="pofDropZone" class="drop-zone">
+
+<div class="drop-icon">📷</div>
+<div class="drop-title">DRAG & DROP PHOTOS HERE</div>
+<div class="drop-subtitle">JPEG / JPG / PNG • Multiple photos allowed</div>
+
+<button type="button" class="drop-file-button" onclick="document.getElementById('pofPhotoInput').click()">
+    CHOOSE PHOTOS
+</button>
+
+<input
+    type="file"
+    id="pofPhotoInput"
+    class="hidden-file-input"
+    accept="image/jpeg,image/jpg,image/png"
+    multiple
+>
+
+</div>
+
+<div id="pofStatus" class="status-box"></div>
+
+<div id="photoViewer" class="photo-viewer">
+
+<button type="button" class="remove-pof-photo-button" onclick="removeCurrentPhoto()" title="Remove current photo">×</button>
+
+<img id="currentPhoto" src="" alt="POF Photo">
+
+</div>
+
+<div id="photoNavigation" class="photo-navigation">
+
+<button type="button" class="nav-button" onclick="previousPhoto()">← PREVIOUS</button>
+
+<span id="photoCounter" style="font-size:11px;font-weight:700;"></span>
+
+<button type="button" class="nav-button" onclick="nextPhoto()">NEXT →</button>
+
+</div>
+
+<div id="pofThumbnails" class="pof-thumbnails"></div>
+
+</div>
+
+<!-- VOF -->
+
+<div id="vofUploadSection" class="upload-section" style="display:none;">
+
+<div class="upload-title">Video of Fault</div>
+
+<div id="vofDropZone" class="drop-zone">
+
+<div class="drop-icon">🎥</div>
+<div class="drop-title">DRAG & DROP VIDEO HERE</div>
+<div class="drop-subtitle">MP4 VIDEO ONLY</div>
+
+<button type="button" class="drop-file-button" onclick="document.getElementById('vofVideoInput').click()">
+    CHOOSE MP4 VIDEO
+</button>
+
+<input
+    type="file"
+    id="vofVideoInput"
+    class="hidden-file-input"
+    accept=".mp4,video/mp4"
+>
+
+</div>
+
+<div id="vofStatus" class="status-box"></div>
+
+<div id="vofReviewer" class="vof-reviewer">
+
+<div class="vof-video-container">
+
+<video id="vofVideo" preload="metadata" playsinline></video>
+
+<input type="range" id="videoTimeline" min="0" max="0" step="0.01" value="0">
+
+<div id="videoTime" class="video-time">00:00 / 00:00</div>
+
+<div class="video-controls">
+
+<button type="button" class="video-control-button" onclick="moveVideo(-1)">-1 SEC</button>
+<button type="button" class="video-control-button" onclick="moveVideo(-0.1)">-0.1 SEC</button>
+<button type="button" class="video-control-button" id="playPauseButton" onclick="toggleVideo()">PLAY</button>
+<button type="button" class="video-control-button" onclick="moveVideo(0.1)">+0.1 SEC</button>
+<button type="button" class="video-control-button" onclick="moveVideo(1)">+1 SEC</button>
+
+</div>
+
+<button type="button" class="include-frame-button" onclick="includeCurrentFrame()">
+    INCLUDE CURRENT FRAME
+</button>
+
+</div>
+
+<div id="includedSection" class="included-section">
+
+<h3>INCLUDED FRAMES</h3>
+
+<div id="includedFrames" class="included-frames"></div>
+
+</div>
+
+</div>
+
+<div id="vofValidationStatus" class="status-box" style="display:none;"></div>
+
+</div>
+
+<!-- POP -->
+
+<div id="popSection" class="pop-section" style="display:none;">
+
+<div class="upload-title">Proof of Purchase</div>
+
+<label class="field-label" for="snidInput">SNID OF THE DEVICE</label>
+
+<input
+    type="text"
+    id="snidInput"
+    class="validation-input"
+    placeholder="Enter 11-digit SNID"
+    maxlength="11"
+    inputmode="numeric"
+    autocomplete="off"
+>
+
+<div class="snid-help">SNID must contain exactly 11 numbers.</div>
+
+<div id="snidError" class="error-message">
+    Incorrect SNID. SNID must contain exactly 11 numbers.
+</div>
+
+<div id="popAttachmentSection" class="pop-attachment">
+
+<div class="upload-title">Attach Proof of Purchase</div>
+
+<div id="popDropZone" class="drop-zone">
+
+<div class="drop-icon">📄</div>
+<div class="drop-title">DRAG & DROP POP HERE</div>
+<div class="drop-subtitle">JPEG / JPG or PDF only</div>
+
+<button type="button" class="drop-file-button" onclick="document.getElementById('popFileInput').click()">
+    CHOOSE JPEG / PDF
+</button>
+
+<input
+    type="file"
+    id="popFileInput"
+    class="hidden-file-input"
+    accept=".jpg,.jpeg,application/pdf,image/jpeg"
+>
+
+</div>
+
+<div id="popFileInfo" class="pop-file-info">
+
+<button type="button" id="removePOPButton" class="pop-remove-button" onclick="removePOPFile()">×</button>
+
+<div id="popFileInfoText"></div>
+
+</div>
+
+<div id="popImagePreview" class="pop-image-preview">
+
+<img id="popPreviewImage" src="" alt="Proof of Purchase">
+
+</div>
+
+<iframe id="popPdfPreview" class="pop-pdf-preview" title="POP PDF Preview"></iframe>
+
+<div id="popRemarksSection" class="pop-remarks-section">
+
+<h3>POP Validation Information</h3>
+
+<div class="pop-remarks-grid">
+
+<div class="pop-remarks-field">
+<label for="purchaseDate">DATE OF PURCHASE</label>
+<input type="date" id="purchaseDate">
+</div>
+
+<div class="pop-remarks-field">
+<label for="storeName">NAME OF STORE</label>
+<input type="text" id="storeName" placeholder="Enter store name">
+</div>
+
+<div class="pop-remarks-field">
+<label for="invoiceNumber">INVOICE NUMBER</label>
+<input type="text" id="invoiceNumber" placeholder="Enter invoice number">
+</div>
+
+</div>
+
+<div id="generatedRemarks" class="generated-remarks">
+
+<label for="popRemarksOutput">POP VALIDATION REMARKS</label>
+
+<div class="remarks-row">
+
+<textarea id="popRemarksOutput" readonly></textarea>
+
+<button type="button" class="copy-remarks-button" onclick="copyPOPREMarks()">
+    📋 COPY
+</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+<!-- VALID / INVALID -->
+
+<div id="validationResult" class="validation-result">
+
+<h3>Validation Result</h3>
+
+<div class="result-buttons">
+
+<button type="button" class="result-button valid-button" onclick="validateAll(true)">
+    ✓ VALID
+</button>
+
+<button type="button" class="result-button invalid-button" onclick="validateAll(false)">
+    ✕ INVALID
+</button>
+
+</div>
+
+</div>
+
+<!-- GENERATE PDF -->
+
+<div id="generateSection" class="generate-section">
+
+<button type="button" id="generatePDFButton" class="generate-button" onclick="generatePDF()">
+    📄 GENERATE COMPRESSED PDF
+</button>
+
+</div>
+
+<!-- POF REPLY TEMPLATE -->
+
+<div id="pofReplySection" class="pof-reply-section">
+
+<div class="pof-reply-header">
+
+<div>
+<div class="pof-reply-eyebrow">EMAIL REPLY TEMPLATE</div>
+<h3>POF Customer Reply</h3>
+</div>
+
+<span id="pofReplyStatus" class="pof-reply-status"></span>
+
+</div>
+
+<textarea id="pofReplyTemplate" class="pof-reply-textarea" readonly></textarea>
+
+<div class="pof-reply-actions">
+
+<button type="button" class="pof-copy-reply-button" onclick="copyPOFReply()">
+    📋 COPY REPLY
+</button>
+
+</div>
+
+</div>
+
+<!-- VOF REPLY TEMPLATE -->
+
+<div id="vofReplySection" class="pof-reply-section vof-reply-section" style="display:none;">
+
+<div class="pof-reply-header">
+
+<div>
+<div class="pof-reply-eyebrow">EMAIL REPLY TEMPLATE</div>
+<h3>VOF Customer Reply</h3>
+</div>
+
+<span id="vofReplyStatus" class="pof-reply-status"></span>
+
+</div>
+
+<textarea id="vofReplyTemplate" class="pof-reply-textarea" readonly></textarea>
+
+<div class="pof-reply-actions">
+
+<button type="button" class="pof-copy-reply-button" onclick="copyVOFReply()">
+    📋 COPY REPLY
+</button>
+
+</div>
+
+</div>
+
+<!-- POP REPLY TEMPLATE -->
+
+<div id="popReplySection" class="pof-reply-section pop-reply-section" style="display:none;">
+
+<div class="pof-reply-header">
+
+<div>
+<div class="pof-reply-eyebrow">EMAIL REPLY TEMPLATE</div>
+<h3>POP Customer Reply</h3>
+</div>
+
+<span id="popReplyStatus" class="pof-reply-status"></span>
+
+</div>
+
+<textarea id="popReplyTemplate" class="pof-reply-textarea" readonly></textarea>
+
+<div class="pof-reply-actions">
+
+<button type="button" class="pof-copy-reply-button" onclick="copyPOPReply()">
+    📋 COPY REPLY
+</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- POF INVALID REASON MODAL -->
+
+<div id="pofInvalidModal" class="pof-invalid-modal">
+
+<div class="pof-invalid-modal-content">
+
+<div class="pof-invalid-header">
+
+<div>
+<div class="pof-invalid-eyebrow">POF VALIDATION</div>
+<h2>Why is the POF Invalid?</h2>
+<p>Please select the reason or reasons why the Proof of Fault is invalid.</p>
+</div>
+
+<button type="button" class="pof-invalid-close" onclick="closePOFInvalidModal()">×</button>
+
+</div>
+
+<div id="pofInvalidReasons" class="pof-invalid-reasons">
+
+<label class="pof-reason-option">
+<input type="checkbox" value="We need the picture of all sides of the device">
+<span>We need the picture of all sides of the device</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Sticker is not visible">
+<span>Sticker is not visible</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="No front side included">
+<span>No front side included</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="No bottom part included">
+<span>No bottom part included</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Need to include the whole screen that is working">
+<span>Need to include the whole screen that is working</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" id="pofOtherCheckbox" value="Others">
+<span>Others</span>
+</label>
+
+<div id="pofOtherReasonContainer" style="display:none;margin-top:8px;">
+
+<textarea
+    id="pofOtherReason"
+    placeholder="Enter your own reason..."
+    rows="3"
+    style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;resize:vertical;box-sizing:border-box;"
+></textarea>
+
+</div>
+
+</div>
+
+<div id="pofInvalidReasonError" class="pof-invalid-reason-error">
+    Please select at least one reason.
+</div>
+
+<div class="pof-invalid-modal-actions">
+
+<button type="button" class="pof-modal-cancel" onclick="closePOFInvalidModal()">CANCEL</button>
+<button type="button" class="pof-modal-continue" onclick="confirmPOFInvalidReasons()">CONTINUE</button>
+
+</div>
+
+</div>
+</div>
+
+<!-- VOF INVALID REASON MODAL -->
+
+<div id="vofInvalidModal" class="pof-invalid-modal" role="dialog" aria-modal="true" aria-labelledby="vofInvalidModalTitle">
+
+<div class="pof-invalid-modal-content">
+
+<div class="pof-invalid-header">
+
+<div>
+<div class="pof-invalid-eyebrow">VOF VALIDATION</div>
+<h2 id="vofInvalidModalTitle">Why is the VOF Invalid?</h2>
+<p>Please select the reason or reasons why the Video of Fault is invalid.</p>
+</div>
+
+<button type="button" class="pof-invalid-close" onclick="closeVOFInvalidModal()" aria-label="Close VOF invalid reasons">×</button>
+
+</div>
+
+<div id="vofInvalidReasons" class="pof-invalid-reasons">
+
+<label class="pof-reason-option">
+<input type="checkbox" value="The video shows a different device from the device lodged for repair.">
+<span>Different device from the device lodged for repair</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="The incorrect device or product was provided.">
+<span>Incorrect device or product</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="The required parts of the device are not clearly visible in the video.">
+<span>Required parts are not visible</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="The reported fault could not be demonstrated in the video.">
+<span>Reported fault was not demonstrated</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="The video file is corrupted or cannot be played.">
+<span>Corrupted or unplayable video</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="The video evidence provided is insufficient to validate the reported fault.">
+<span>Insufficient video evidence</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" id="vofOtherCheckbox" value="Others">
+<span>Others</span>
+</label>
+
+<div id="vofOtherReasonContainer" style="display:none;margin-top:8px;">
+
+<textarea
+    id="vofOtherReason"
+    placeholder="Enter your own reason..."
+    rows="3"
+    style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;resize:vertical;box-sizing:border-box;"
+></textarea>
+
+</div>
+
+</div>
+
+<div id="vofInvalidReasonError" class="pof-invalid-reason-error" role="alert" aria-live="polite">
+    Please select at least one reason.
+</div>
+
+<div class="pof-invalid-modal-actions">
+
+<button type="button" class="pof-modal-cancel" onclick="closeVOFInvalidModal()">CANCEL</button>
+<button type="button" class="pof-modal-continue" onclick="confirmVOFInvalidReasons()">CONTINUE</button>
+
+</div>
+
+</div>
+</div>
+
+<!-- POP INVALID REASON MODAL -->
+
+<div id="popInvalidModal" class="pof-invalid-modal" role="dialog" aria-modal="true" aria-labelledby="popInvalidModalTitle">
+
+<div class="pof-invalid-modal-content">
+
+<div class="pof-invalid-header">
+
+<div>
+<div class="pof-invalid-eyebrow">POP VALIDATION</div>
+<h2 id="popInvalidModalTitle">Why is the POP Invalid?</h2>
+<p>Select all applicable reasons. The reply will include only the missing or incorrect invoice details.</p>
+</div>
+
+<button type="button" class="pof-invalid-close" onclick="closePOPInvalidModal()" aria-label="Close POP invalid reasons">×</button>
+
+</div>
+
+<div id="popInvalidModalReasons" class="pof-invalid-reasons">
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Different name on the invoice">
+<span>Different name on the invoice</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Product listed does not match the device lodged for repair">
+<span>Product listed does not match the device lodged for repair</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Invoice is not readable">
+<span>Invoice is not readable</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="No invoice number">
+<span>No invoice number</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Store details are missing or incomplete">
+<span>Store details are missing or incomplete</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Tax Invoice or ABN/GST/Tax ID details are missing or incorrect">
+<span>Tax Invoice or ABN/GST/Tax ID details are missing or incorrect</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Date of purchase is missing or incorrect">
+<span>Date of purchase is missing or incorrect</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" value="Product description and price details are missing or incomplete">
+<span>Product description and price details are missing or incomplete</span>
+</label>
+
+<label class="pof-reason-option">
+<input type="checkbox" id="popModalOtherCheckbox" value="Others">
+<span>Others</span>
+</label>
+
+<div id="popModalOtherReasonContainer" style="display:none;margin-top:8px;">
+
+<textarea
+    id="popModalOtherReason"
+    placeholder="Enter the other reason..."
+    rows="3"
+    style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;resize:vertical;box-sizing:border-box;"
+></textarea>
+
+</div>
+
+</div>
+
+<div id="popInvalidModalError" class="pof-invalid-reason-error" role="alert" aria-live="polite">
+    Please select at least one reason.
+</div>
+
+<div class="pof-invalid-modal-actions">
+
+<button type="button" class="pof-modal-cancel" onclick="closePOPInvalidModal()">CANCEL</button>
+<button type="button" class="pof-modal-continue" onclick="confirmPOPInvalidReasons()">GENERATE REPLY</button>
+
+</div>
+
+</div>
+</div>
+
+<!-- ZOOM OVERLAY -->
+
+<div id="zoomOverlay" class="zoom-overlay">
+
+<button type="button" class="zoom-close" onclick="closeZoom()">×</button>
+
+<img id="zoomImage" class="zoom-image" src="" alt="Zoomed image">
+
+<div class="zoom-help">Mouse wheel = Zoom • ESC = Close</div>
+
+</div>
+
+<!-- POF OTHER REASON HANDLER -->
+
+<script>
+(function () {
+    const checkbox = document.getElementById("pofOtherCheckbox");
+    const container = document.getElementById("pofOtherReasonContainer");
+    const textarea = document.getElementById("pofOtherReason");
+
+    if (!checkbox || !container || !textarea) return;
+
+    checkbox.addEventListener("change", function () {
+        container.style.display = this.checked ? "block" : "none";
+
+        if (this.checked) {
+            textarea.focus();
+        } else {
+            textarea.value = "";
+        }
+    });
+})();
+</script>
+
+<!-- VOF OTHER REASON HANDLER -->
+
+<script>
+(function () {
+    const checkbox = document.getElementById("vofOtherCheckbox");
+    const container = document.getElementById("vofOtherReasonContainer");
+    const textarea = document.getElementById("vofOtherReason");
+
+    if (!checkbox || !container || !textarea) return;
+
+    checkbox.addEventListener("change", function () {
+        container.style.display = this.checked ? "block" : "none";
+
+        if (this.checked) {
+            textarea.focus();
+        } else {
+            textarea.value = "";
+        }
+    });
+})();
+</script>
+
+<!-- POP OTHER REASON HANDLER -->
+
+
+<script>
+(function () {
+    const checkbox = document.getElementById("popModalOtherCheckbox");
+    const container = document.getElementById("popModalOtherReasonContainer");
+    const textarea = document.getElementById("popModalOtherReason");
+    const error = document.getElementById("popInvalidModalError");
+
+    if (!checkbox || !container || !textarea) return;
+
+    checkbox.addEventListener("change", function () {
+        container.style.display = this.checked ? "block" : "none";
+
+        if (!this.checked) {
+            textarea.value = "";
+        } else {
+            textarea.focus();
+        }
+
+        if (error) error.style.display = "none";
+    });
+})();
+</script>
+
+
+<script src="pop.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- SUPABASE CONFIGURATION -->
+<script src="supabase-config.js"></script>
+
+<!-- SUPABASE BRIDGE -->
+<script src="supabase-bridge.js"></script>
+
+<!-- SUPABASE AUTHENTICATION -->
+<script src="supabase-auth.js"></script>
+
+</body>
+</html>

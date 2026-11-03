@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RN Creation</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#f5f6fb;color:#292844;font-family:Arial,sans-serif}
+.rn-container{max-width:950px;margin:auto}
+.rn-panel{background:#fff;border:1px solid #e5e4ef;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 5px 20px rgba(38,32,80,.05)}
+.rn-heading{margin:0 0 18px;font-size:20px;font-weight:800;color:#514d83}
+.rn-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.rn-field{display:flex;flex-direction:column;gap:7px}
+.rn-field.full-width{grid-column:1/-1}
+.rn-field label,.rn-filter label{font-size:11px;font-weight:800;color:#514d83}
+.rn-field input,.rn-field textarea,.rn-filter input{width:100%;border:1px solid #deddea;border-radius:8px;padding:11px 12px;font:inherit;font-size:13px;color:#292844;background:#fff;outline:none}
+.rn-field input:focus,.rn-field textarea:focus,.rn-filter input:focus{border-color:#7773dc;box-shadow:0 0 0 3px rgba(119,115,220,.1)}
+.rn-field textarea{min-height:100px;resize:vertical}
+.rn-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.rn-btn{border:none;border-radius:8px;min-height:38px;padding:0 16px;background:#667eea;color:#fff;font-size:11px;font-weight:800;cursor:pointer}
+.rn-btn:hover{filter:brightness(.96)}
+.rn-btn.secondary{background:#eeedf7;color:#514d83}
+.rn-btn.danger{background:#fff0f0;color:#c34444}
+.rn-btn:disabled{opacity:.45;cursor:not-allowed}
+.rn-history-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.rn-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rn-filter input{width:auto;min-width:150px;padding:8px 10px}
+.rn-count{font-size:11px;color:#77748e;font-weight:700;margin-bottom:12px}
+.rn-history-list{display:flex;flex-direction:column;gap:14px}
+.rn-day-heading{margin:8px 0 0;padding-bottom:8px;border-bottom:1px solid #e9e7f3;color:#514d83;font-size:12px;font-weight:900}
+.rn-history-card{padding:16px;border:1px solid #e5e3f0;border-radius:11px;background:#fff}
+.rn-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.rn-card-title{margin:0;font-size:14px;font-weight:900;color:#514d83;overflow-wrap:anywhere}
+.rn-card-date{margin-top:5px;font-size:10px;color:#89869d}
+.rn-detail-list{display:flex;flex-direction:column;gap:10px}
+.rn-detail{padding:11px;border-radius:8px;background:#f8f8fc;border:1px solid #efedf6;min-width:0}
+.rn-detail-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:7px}
+.rn-detail-label{color:#77728f;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.3px}
+.rn-detail-value{font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;color:#34324c}
+.rn-copy-btn{flex-shrink:0;border:0;border-radius:6px;padding:6px 9px;background:#e9e8fb;color:#514d83;font-size:9px;font-weight:900;cursor:pointer}
+.rn-card-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.rn-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:16px;padding:12px;border:1px solid #e3e1ec;border-radius:10px;background:#fafaff}
+.rn-pagination button{min-height:34px;padding:0 14px;border:none;border-radius:7px;background:#667eea;color:white;font-size:9px;font-weight:900;cursor:pointer}
+.rn-pagination button:disabled{background:#e6e5ed;color:#aaa9b8;cursor:not-allowed}
+#rnPageInfo{color:#514d83;font-size:10px;font-weight:900;white-space:nowrap}
+.rn-empty{padding:28px 15px;text-align:center;color:#89869d;font-size:12px;border:1px dashed #dcd9ea;border-radius:10px}
+.rn-status{min-height:16px;margin-top:10px;font-size:11px;color:#514d83}
+@media(max-width:600px){
+body{padding:10px}
+.rn-panel{padding:15px}
+.rn-form-grid{grid-template-columns:1fr}
+.rn-field.full-width{grid-column:auto}
+.rn-card-header{flex-direction:column}
+.rn-filter{width:100%}
+.rn-filter input{flex:1;min-width:0}
+}
+@media(max-width:400px){
+.rn-pagination{gap:6px;padding:8px 4px}
+.rn-pagination button{padding:0 8px;font-size:8px}
+}
+</style>
+</head>
+
+<body>
+<div class="rn-container">
+
+<section class="rn-panel">
+    <button type="button" class="rn-btn secondary" id="rnBackToChat">← BACK TO CHAT</button>
+
+    <h1 class="rn-heading" style="margin-top:18px">RN Creation</h1>
+
+    <form id="rnCreationForm">
+        <div class="rn-form-grid">
+            <div class="rn-field">
+                <label for="rnSnid">SNID / Serial Number</label>
+                <input id="rnSnid" type="text" required>
+            </div>
+            <div class="rn-field">
+                <label for="rnEmail">Customer Email</label>
+                <input id="rnEmail" type="email" required>
+            </div>
+            <div class="rn-field">
+                <label for="rnNumber">RN Number</label>
+                <input id="rnNumber" type="text" placeholder="123456-123456" pattern="[0-9]{6}-[0-9]{6}" title="Enter RN number in 000000-000000 format" required>
+            </div>
+            <div class="rn-field">
+                <label for="rnCustomerName">Customer Name</label>
+                <input id="rnCustomerName" type="text" required>
+            </div>
+            <div class="rn-field full-width">
+                <label for="rnCustomerMessage">Customer Message</label>
+                <textarea id="rnCustomerMessage" required></textarea>
+            </div>
+            <div class="rn-field full-width">
+                <label for="rnMyReply">My Reply</label>
+                <textarea id="rnMyReply" required></textarea>
+            </div>
+        </div>
+
+        <div class="rn-actions">
+            <button class="rn-btn" type="submit">DONE / SAVE RN</button>
+            <button class="rn-btn secondary" type="button" id="rnClearForm">CLEAR FORM</button>
+        </div>
+        <div id="rnFormStatus" class="rn-status" role="status"></div>
+    </form>
+</section>
+
+<section class="rn-panel">
+    <div class="rn-history-toolbar">
+        <h2 class="rn-heading" style="margin:0">Saved RN History</h2>
+        <div class="rn-filter">
+            <label for="rnDateFilter">Filter by date</label>
+            <input type="date" id="rnDateFilter">
+            <button type="button" class="rn-btn secondary" id="rnClearFilter">SHOW ALL</button>
+        </div>
+    </div>
+
+    <div id="rnRecordCount" class="rn-count"></div>
+    <div id="rnHistoryList" class="rn-history-list"></div>
+
+    <div class="rn-pagination" id="rnPagination">
+        <button type="button" id="rnPrevPage">← PREVIOUS</button>
+        <span id="rnPageInfo">Page 1 of 1</span>
+        <button type="button" id="rnNextPage">NEXT →</button>
+    </div>
+</section>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+const STORAGE_KEY = "rnCreationHistory";
+const RN_PER_PAGE = 1;
+
+const $ = id => document.getElementById(id);
+const form = $("rnCreationForm");
+const formStatus = $("rnFormStatus");
+const dateFilter = $("rnDateFilter");
+const historyList = $("rnHistoryList");
+const pagination = $("rnPagination");
+const pageInfo = $("rnPageInfo");
+const prevButton = $("rnPrevPage");
+const nextButton = $("rnNextPage");
+
+let currentPage = 1;
+let history = loadHistory();
+
+function safeString(value){
+    return value == null ? "" : String(value);
+}
+
+/* Supports both new and older saved records */
+function loadHistory(){
+    try{
+        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        if(!Array.isArray(stored)) return [];
+
+        return stored.map((item,index)=>{
+            item = item && typeof item === "object" ? item : {};
+
+            return {
+                id: safeString(item.id || ("legacy-" + index + "-" + safeString(item.rnNumber || item.rn))),
+                snid: safeString(item.snid || item.SNID || item.serialNumber || item.serial || item.sn),
+                email: safeString(item.email || item.customerEmail),
+                rnNumber: safeString(item.rnNumber || item.rn || item.RN || item.rn_number),
+                customerName: safeString(item.customerName || item.name || item.customer || item.customer_name),
+                customerMessage: safeString(item.customerMessage || item.message || item.customer_message),
+                myReply: safeString(item.myReply || item.reply || item.response || item.my_reply),
+                timestamp: safeString(item.timestamp || item.createdAt || item.created_at),
+                date: safeString(item.date || item.savedDate || item.createdDate || item.created_at || "")
+            };
+        });
+    }catch(error){
+        return [];
+    }
+}
+
+function persistHistory(){
+    try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        return true;
+    }catch(error){
+        formStatus.textContent = "Unable to save history in browser storage.";
+        return false;
+    }
+}
+
+function dateToISO(year,month,day){
+    return year + "-" + String(month).padStart(2,"0") + "-" + String(day).padStart(2,"0");
+}
+
+/* Convert common old date formats into yyyy-mm-dd */
+function normalizeDate(value){
+    if(!value) return "";
+
+    const raw = String(value).trim();
+
+    let match = raw.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+    if(match) return dateToISO(Number(match[1]),Number(match[2]),Number(match[3]));
+
+    match = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if(match){
+        const first = Number(match[1]);
+        const second = Number(match[2]);
+        const year = Number(match[3]);
+
+        /* Legacy dates in this app were displayed as en-GB: DD/MM/YYYY */
+        return dateToISO(year,second,first);
+    }
+
+    match = raw.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+    if(match){
+        const first = Number(match[1]);
+        const second = Number(match[2]);
+        const year = Number(match[3]);
+
+        /* Prefer DD-MM-YYYY for legacy records */
+        return dateToISO(year,second,first);
+    }
+
+    const parsed = new Date(raw);
+    if(!Number.isNaN(parsed.getTime())){
+        return dateToISO(parsed.getFullYear(),parsed.getMonth()+1,parsed.getDate());
+    }
+
+    return "";
+}
+
+function getRecordDay(record){
+    if(record.timestamp){
+        const parsed = new Date(record.timestamp);
+        if(!Number.isNaN(parsed.getTime())){
+            return dateToISO(parsed.getFullYear(),parsed.getMonth()+1,parsed.getDate());
+        }
+    }
+
+    return normalizeDate(record.date);
+}
+
+function displayDate(record){
+    const day = getRecordDay(record);
+    if(!day) return record.date || "Date unavailable";
+
+    const parts = day.split("-").map(Number);
+    return new Date(parts[0],parts[1]-1,parts[2]).toLocaleDateString(undefined,{
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+    });
+}
+
+function displayTimestamp(record){
+    if(record.timestamp){
+        const d = new Date(record.timestamp);
+        if(!Number.isNaN(d.getTime())) return d.toLocaleString();
+    }
+    return displayDate(record);
+}
+
+function el(tag,className,text){
+    const node = document.createElement(tag);
+    if(className) node.className = className;
+    if(text !== undefined) node.textContent = text;
+    return node;
+}
+
+function copyText(text){
+    const value = safeString(text);
+
+    if(navigator.clipboard && window.isSecureContext){
+        return navigator.clipboard.writeText(value);
+    }
+
+    return new Promise((resolve,reject)=>{
+        const textarea = document.createElement("textarea");
+        textarea.value = value;
+        textarea.setAttribute("readonly","");
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        let copied = false;
+        try{ copied = document.execCommand("copy"); }catch(e){ copied = false; }
+
+        textarea.remove();
+        copied ? resolve() : reject(new Error("Copy failed"));
+    });
+}
+
+function copyFeedback(button,text){
+    const original = button.textContent;
+    button.disabled = true;
+
+    copyText(text).then(()=>{
+        button.textContent = "COPIED!";
+    }).catch(()=>{
+        button.textContent = "FAILED";
+    }).finally(()=>{
+        button.disabled = false;
+        setTimeout(()=>button.textContent = original,1200);
+    });
+}
+
+function makeDetail(label,value){
+    const detail = el("div","rn-detail");
+    const top = el("div","rn-detail-top");
+    const labelNode = el("span","rn-detail-label",label);
+    const copyButton = el("button","rn-copy-btn","COPY");
+    copyButton.type = "button";
+    copyButton.addEventListener("click",()=>copyFeedback(copyButton,value));
+
+    const valueNode = el("div","rn-detail-value",value || "—");
+    top.append(labelNode,copyButton);
+    detail.append(top,valueNode);
+    return detail;
+}
+
+function createCard(record){
+    const card = el("article","rn-history-card");
+    const header = el("div","rn-card-header");
+    const headingGroup = el("div");
+    headingGroup.append(
+        el("h3","rn-card-title",record.rnNumber || "RN record"),
+        el("div","rn-card-date",displayTimestamp(record))
+    );
+
+    const details = el("div","rn-detail-list");
+    details.append(
+        makeDetail("SNID / Serial Number",record.snid),
+        makeDetail("Customer Email",record.email),
+        makeDetail("RN Number",record.rnNumber),
+        makeDetail("Customer Name",record.customerName),
+        makeDetail("Customer Message",record.customerMessage),
+        makeDetail("My Reply",record.myReply)
+    );
+
+    const actions = el("div","rn-card-actions");
+    const copyAll = el("button","rn-btn","COPY ALL DETAILS");
+    copyAll.type = "button";
+    copyAll.addEventListener("click",()=>{
+        const all = [
+            ["SNID / Serial Number",record.snid],
+            ["Customer Email",record.email],
+            ["RN Number",record.rnNumber],
+            ["Customer Name",record.customerName],
+            ["Customer Message",record.customerMessage],
+            ["My Reply",record.myReply]
+        ].map(row=>row[0] + ":\n" + row[1]).join("\n\n");
+
+        copyFeedback(copyAll,all);
+    });
+
+    const deleteButton = el("button","rn-btn danger","DELETE");
+    deleteButton.type = "button";
+    deleteButton.addEventListener("click",()=>{
+        if(!confirm("Delete this RN record?")) return;
+        history = history.filter(item=>item.id !== record.id);
+        persistHistory();
+        renderHistory();
+    });
+
+    actions.append(copyAll,deleteButton);
+    header.append(headingGroup);
+    card.append(header,details,actions);
+    return card;
+}
+
+function renderHistory(){
+    historyList.replaceChildren();
+
+    const selectedDay = dateFilter.value;
+
+    const filtered = history
+        .filter(record=>{
+            if(!selectedDay) return true;
+            return getRecordDay(record) === selectedDay;
+        })
+        .sort((a,b)=>{
+            const aTime = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+            const bTime = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+            return bTime - aTime;
+        });
+
+    $("rnRecordCount").textContent =
+        filtered.length + " RN record" + (filtered.length === 1 ? "" : "s");
+
+    if(!filtered.length){
+        historyList.appendChild(el(
+            "div",
+            "rn-empty",
+            selectedDay
+                ? "No RN records found for this date. Check the date format on older records or click SHOW ALL."
+                : "No saved RN records yet."
+        ));
+        pagination.style.display = "none";
+        return;
+    }
+
+    const totalPages = Math.max(1,Math.ceil(filtered.length/RN_PER_PAGE));
+    currentPage = Math.max(1,Math.min(currentPage,totalPages));
+
+    const start = (currentPage-1)*RN_PER_PAGE;
+    const visibleRecords = filtered.slice(start,start+RN_PER_PAGE);
+
+    pageInfo.textContent = "Page " + currentPage + " of " + totalPages;
+    prevButton.disabled = currentPage <= 1;
+    nextButton.disabled = currentPage >= totalPages;
+    pagination.style.display = "flex";
+
+    visibleRecords.forEach(record=>{
+        historyList.appendChild(el("h3","rn-day-heading",displayDate(record)));
+        historyList.appendChild(createCard(record));
+    });
+}
+
+function changePage(direction){
+    currentPage += direction;
+    renderHistory();
+}
+
+form.addEventListener("submit",event=>{
+    event.preventDefault();
+    if(!form.reportValidity()) return;
+
+    const now = new Date();
+    const rnNumber = $("rnNumber").value.trim();
+
+    if(!/^\d{6}-\d{6}$/.test(rnNumber)){
+        $("rnNumber").setCustomValidity("Enter RN number in 000000-000000 format.");
+        $("rnNumber").reportValidity();
+        return;
+    }
+    $("rnNumber").setCustomValidity("");
+
+    const record = {
+        id:"rn-" + now.getTime() + "-" + Math.random().toString(36).slice(2,8),
+        snid:$("rnSnid").value.trim(),
+        email:$("rnEmail").value.trim(),
+        rnNumber,
+        customerName:$("rnCustomerName").value.trim(),
+        customerMessage:$("rnCustomerMessage").value.trim(),
+        myReply:$("rnMyReply").value.trim(),
+        timestamp:now.toISOString(),
+        date:dateToISO(now.getFullYear(),now.getMonth()+1,now.getDate())
+    };
+
+    history.unshift(record);
+
+    if(!persistHistory()){
+        history.shift();
+        return;
+    }
+
+    dateFilter.value = getRecordDay(record);
+    currentPage = 1;
+    renderHistory();
+
+    formStatus.textContent = "RN record saved successfully.";
+    form.reset();
+});
+
+$("rnNumber").addEventListener("input",()=>{
+    $("rnNumber").setCustomValidity("");
+});
+
+$("rnClearForm").addEventListener("click",()=>{
+    form.reset();
+    formStatus.textContent = "";
+    $("rnNumber").setCustomValidity("");
+});
+
+dateFilter.addEventListener("change",()=>{
+    currentPage = 1;
+    renderHistory();
+});
+
+$("rnClearFilter").addEventListener("click",()=>{
+    dateFilter.value = "";
+    currentPage = 1;
+    renderHistory();
+});
+
+prevButton.addEventListener("click",()=>changePage(-1));
+nextButton.addEventListener("click",()=>changePage(1));
+
+/* Back to chat: return to the previous page */
+$("rnBackToChat").addEventListener("click",()=>{
+    if(window.history.length > 1){
+        window.history.back();
+    }else{
+        window.location.href = "index.html";
+    }
+});
+
+renderHistory();
+})();
+</script>
+</body>
+</html>

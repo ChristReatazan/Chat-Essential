@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ECOVACS Case Creation Essential</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================
+           ECOVACS PAGE
+           ========================================= */
+
+        .ecovacs-page {
+            padding-bottom: 30px;
+        }
+
+        .ecovacs-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .ecovacs-page-title {
+            margin: 0;
+            font-size: 21px;
+            font-weight: 900;
+            letter-spacing: 1px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #5b5be7,
+                    #9b5de5,
+                    #e85aad
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ecovacs-back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            height: 32px;
+            padding: 0 14px;
+
+            border-radius: 8px;
+
+            background: #eeeaff;
+            color: #6558d9;
+
+            text-decoration: none;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            transition: .2s ease;
+        }
+
+        .ecovacs-back-button:hover {
+            background: #7c6cff;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           FUSE SOURCE OF TRUTH
+           ========================================= */
+
+        .fuse-source-card {
+            position: relative;
+            margin-bottom: 18px;
+            padding: 19px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8f7ff,
+                    #ffffff,
+                    #fff9fd
+                );
+
+            border: 2px solid #bdb5f5;
+            border-radius: 16px;
+
+            box-shadow:
+                0 9px 25px rgba(80,70,150,.10);
+
+            overflow: hidden;
+        }
+
+        .fuse-source-card::before {
+            content: "";
+
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 6px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #5b5be7,
+                    #764ba2,
+                    #e85aad
+                );
+        }
+
+        .fuse-source-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .fuse-source-icon {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 11px;
+
+            background: #eeeaff;
+            color: #5b51c9;
+
+            font-size: 19px;
+
+            border: 1px solid #d8d2ff;
+        }
+
+        .fuse-source-title {
+            margin: 0;
+
+            color: #303047;
+
+            font-size: 15px;
+            font-weight: 950;
+            letter-spacing: .3px;
+        }
+
+        .fuse-source-subtitle {
+            margin: 3px 0 0;
+
+            color: #77778c;
+
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        .fuse-source-status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            margin: 12px 0;
+
+            padding: 10px 12px;
+
+            border-radius: 9px;
+
+            background: #f0fff5;
+            border: 1px solid #c9efd7;
+
+            color: #267346;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .fuse-status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #35b96b;
+
+            box-shadow:
+                0 0 0 4px rgba(53,185,107,.12);
+        }
+
+        .fuse-source-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            height: 32px;
+            padding: 0 15px;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #667eea,
+                    #764ba2
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: .5px;
+
+            transition: .2s ease;
+
+            box-shadow:
+                0 5px 13px rgba(100,90,200,.16);
+        }
+
+        .fuse-source-button:hover {
+            transform: translateY(-2px);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #5b5be7,
+                    #9b5de5
+                );
+
+            box-shadow:
+                0 8px 18px rgba(100,90,200,.22);
+        }
+
+
+        /* =========================================
+           IMPORTANT REMINDER
+           ========================================= */
+
+        .ecovacs-notes-card {
+            position: relative;
+
+            margin-bottom: 18px;
+
+            background: #ffffff;
+
+            border: 1px solid #e3e1ec;
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 8px 24px rgba(60,60,100,.08);
+
+            overflow: hidden;
+        }
+
+        .ecovacs-notes-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 5px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #5b5be7,
+                    #764ba2,
+                    #e85aad
+                );
+        }
+
+        .ecovacs-notes-header {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .ecovacs-notes-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff0d5,
+                    #fff7e8
+                );
+
+            border: 1px solid #f3dfb9;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 5px 12px rgba(200,140,50,.10);
+        }
+
+        .ecovacs-notes-title {
+            margin: 0;
+
+            font-size: 16px;
+            font-weight: 950;
+
+            letter-spacing: .4px;
+
+            color: #303047;
+        }
+
+        .ecovacs-notes-subtitle {
+            margin: 4px 0 0;
+
+            font-size: 10px;
+            line-height: 1.5;
+
+            color: #77778c;
+        }
+
+        .ecovacs-notes-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 14px;
+        }
+
+        .ecovacs-note {
+            position: relative;
+
+            padding:
+                17px
+                18px
+                17px
+                20px;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #ffffff,
+                    #faf9ff
+                );
+
+            border: 1px solid #e5e3ef;
+
+            box-shadow:
+                0 6px 16px rgba(60,60,100,.06);
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease,
+                border-color .2s ease;
+
+            overflow: hidden;
+        }
+
+        .ecovacs-note::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 13px;
+            bottom: 13px;
+
+            width: 4px;
+
+            border-radius:
+                0
+                5px
+                5px
+                0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #667eea,
+                    #9b5de5
+                );
+        }
+
+        .ecovacs-note:nth-child(2) {
+            transform: translateY(8px);
+        }
+
+        .ecovacs-note:nth-child(3) {
+            transform: translateY(-2px);
+        }
+
+        .ecovacs-note:nth-child(4) {
+            transform: translateY(10px);
+        }
+
+        .ecovacs-note:hover {
+            transform: translateY(-4px);
+
+            border-color: #c9c3f2;
+
+            box-shadow:
+                0 12px 25px rgba(80,70,150,.12);
+        }
+
+        .ecovacs-note:nth-child(2):hover,
+        .ecovacs-note:nth-child(4):hover {
+            transform: translateY(4px);
+        }
+
+        .ecovacs-note-number {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 26px;
+            height: 26px;
+
+            margin-bottom: 9px;
+
+            border-radius: 8px;
+
+            background: #eeeaff;
+            color: #5b51c9;
+
+            font-size: 10px;
+            font-weight: 950;
+        }
+
+        .ecovacs-note-title {
+            margin: 0;
+
+            font-size: 12px;
+            line-height: 1.3;
+
+            font-weight: 950;
+
+            letter-spacing: .3px;
+
+            color: #35354d;
+        }
+
+        .ecovacs-note-text {
+            margin: 7px 0 0;
+
+            font-size: 10px;
+            line-height: 1.65;
+
+            color: #68687c;
+
+            font-weight: 500;
+        }
+
+
+        /* =========================================
+           WARNING
+           ========================================= */
+
+        .ecovacs-warning-note {
+            grid-column: 1 / -1;
+
+            padding:
+                19px
+                20px
+                19px
+                23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff7df 0%,
+                    #fffaf0 50%,
+                    #fff2f2 100%
+                );
+
+            border: 2px solid #efc45e;
+
+            box-shadow:
+                0 10px 26px rgba(180,125,35,.13);
+
+            transform: translateY(4px);
+        }
+
+        .ecovacs-warning-note::before {
+            width: 6px;
+
+            top: 10px;
+            bottom: 10px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #f5a623,
+                    #e05252
+                );
+        }
+
+        .ecovacs-warning-note .ecovacs-note-number {
+            width: auto;
+
+            min-width: 38px;
+
+            padding: 0 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffe7a8,
+                    #ffd5d5
+                );
+
+            color: #9b5b16;
+
+            border: 1px solid #efca7a;
+        }
+
+        .ecovacs-warning-note .ecovacs-note-title {
+            color: #784814;
+            font-size: 13px;
+        }
+
+        .ecovacs-warning-note .ecovacs-note-text {
+            color: #654f35;
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           MODEL REFERENCE BUTTON
+           ========================================= */
+
+        .model-reference-wrapper {
+            margin-bottom: 18px;
+        }
+
+        .model-reference-button {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 15px 17px;
+
+            border: 1px solid #ddd8f5;
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8f6ff,
+                    #ffffff
+                );
+
+            color: #49466e;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            transition: .2s ease;
+
+            box-shadow:
+                0 6px 15px rgba(70,60,130,.06);
+        }
+
+        .model-reference-button:hover {
+            transform: translateY(-2px);
+
+            border-color: #bbb3ef;
+
+            box-shadow:
+                0 10px 22px rgba(70,60,130,.11);
+        }
+
+        .model-reference-button-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .model-reference-icon {
+            width: 35px;
+            height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #eeeaff;
+
+            color: #5b51c9;
+
+            font-size: 17px;
+        }
+
+        .model-reference-label {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .model-reference-label strong {
+            font-size: 12px;
+            font-weight: 950;
+            color: #41405d;
+        }
+
+        .model-reference-label span {
+            margin-top: 2px;
+            font-size: 8px;
+            color: #9999aa;
+        }
+
+        .model-reference-arrow {
+            font-size: 16px;
+            color: #766bd1;
+
+            transition: transform .25s ease;
+        }
+
+        .model-reference-button.active .model-reference-arrow {
+            transform: rotate(180deg);
+        }
+
+        .model-reference-content {
+            display: none;
+
+            margin-top: 10px;
+
+            padding: 16px;
+
+            background: #ffffff;
+
+            border: 1px solid #e2dfed;
+
+            border-radius: 13px;
+
+            box-shadow:
+                0 7px 18px rgba(60,60,100,.06);
+
+            animation: modelReferenceOpen .2s ease;
+        }
+
+        .model-reference-content.show {
+            display: block;
+        }
+
+        @keyframes modelReferenceOpen {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .model-reference-warning {
+            margin-bottom: 13px;
+
+            padding: 11px 13px;
+
+            border-radius: 9px;
+
+            background: #fff8e8;
+
+            border: 1px solid #efd18b;
+
+            color: #745626;
+
+            font-size: 9px;
+            line-height: 1.55;
+            font-weight: 700;
+        }
+
+        .model-group {
+            margin-bottom: 14px;
+        }
+
+        .model-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .model-group-title {
+            margin: 0 0 8px;
+
+            font-size: 10px;
+
+            font-weight: 950;
+
+            color: #504c72;
+
+            text-transform: uppercase;
+
+            letter-spacing: .6px;
+        }
+
+        .model-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .model-item {
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 7px 10px;
+
+            border-radius: 7px;
+
+            background: #f7f6fc;
+
+            border: 1px solid #e5e2ef;
+
+            color: #5d5b70;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           ESSENTIAL TOOLS
+           ========================================= */
+
+        .essential-tools-card {
+            background: #fff;
+
+            border: 1px solid #e6e4f0;
+
+            border-radius: 15px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 7px 18px rgba(60,60,100,.06);
+        }
+
+        .essential-tools-header {
+            margin-bottom: 15px;
+        }
+
+        .essential-tools-title {
+            margin: 0;
+
+            font-size: 15px;
+            font-weight: 900;
+
+            color: #3f3f58;
+        }
+
+        .essential-tools-subtitle {
+            margin: 4px 0 0;
+
+            font-size: 10px;
+
+            color: #9999aa;
+        }
+
+        .essential-tools-list {
+            display: flex;
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+        .essential-tool {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 13px 14px;
+
+            border-radius: 11px;
+
+            background: #fafaff;
+
+            border: 1px solid #e7e5f1;
+
+            text-decoration: none;
+
+            transition: .2s ease;
+        }
+
+        .essential-tool:hover {
+            transform: translateY(-2px);
+
+            background: #f5f2ff;
+
+            border-color: #c9c2ff;
+
+            box-shadow:
+                0 7px 16px rgba(100,90,200,.10);
+        }
+
+        .essential-tool-info {
+            display: flex;
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+        .essential-tool-label {
+            font-size: 12px;
+
+            font-weight: 900;
+
+            color: #4c4c68;
+        }
+
+        .essential-tool-description {
+            margin-top: 3px;
+
+            font-size: 9px;
+
+            color: #9999aa;
+        }
+
+        .essential-tool-button {
+            flex-shrink: 0;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            height: 28px;
+
+            padding: 0 12px;
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #667eea,
+                    #764ba2
+                );
+
+            color: white;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            text-decoration: none;
+        }
+
+        .essential-tool:hover .essential-tool-button {
+            background:
+                linear-gradient(
+                    135deg,
+                    #5b5be7,
+                    #9b5de5
+                );
+        }
+
+
+        /* =========================================
+           MOBILE
+           ========================================= */
+
+        @media(max-width:700px) {
+
+            .ecovacs-page-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .ecovacs-back-button {
+                width: 100%;
+            }
+
+            .ecovacs-notes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ecovacs-note:nth-child(2),
+            .ecovacs-note:nth-child(3),
+            .ecovacs-note:nth-child(4),
+            .ecovacs-warning-note {
+                transform: none;
+            }
+
+            .ecovacs-note:nth-child(2):hover,
+            .ecovacs-note:nth-child(4):hover {
+                transform: translateY(-4px);
+            }
+
+            .essential-tool {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .essential-tool-button {
+                width: 100%;
+            }
+
+            .fuse-source-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container ecovacs-page">
+
+        <!-- =========================================
+             HEADER
+             ========================================= -->
+
+        <div class="ecovacs-page-header">
+
+            <h1 class="ecovacs-page-title">
+                ECOVACS Case Creation Essential
+            </h1>
+
+            <a href="Chat.html" class="ecovacs-back-button">
+                ← BACK
+            </a>
+
+        </div>
+
+
+        <!-- =========================================
+             FUSE SOURCE OF TRUTH
+             ========================================= -->
+
+        <div class="fuse-source-card">
+
+            <div class="fuse-source-header">
+
+                <div class="fuse-source-icon">
+                    🔄
+                </div>
+
+                <div>
+
+                    <h2 class="fuse-source-title">
+                        FUSE SOURCE OF TRUTH
+                    </h2>
+
+                    <p class="fuse-source-subtitle">
+                        Always refer to the latest ECOVACS FUSE article for current
+                        case creation requirements and updates.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="fuse-source-status">
+
+                <span class="fuse-status-dot"></span>
+
+                Latest information is maintained in the FUSE article
+
+            </div>
+
+
+            <a
+                href="https://acerpap.fuseuniversal.com/communities/1710/contents/174741"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="fuse-source-button"
+            >
+                OPEN LATEST FUSE ARTICLE
+            </a>
+
+        </div>
+
+
+        <!-- =========================================
+             IMPORTANT REMINDERS
+             ========================================= -->
+
+        <div class="ecovacs-notes-card">
+
+            <div class="ecovacs-notes-header">
+
+                <div class="ecovacs-notes-icon">
+                    ⚠️
+                </div>
+
+                <div>
+
+                    <h2 class="ecovacs-notes-title">
+                        IMPORTANT REMINDERS
+                    </h2>
+
+                    <p class="ecovacs-notes-subtitle">
+                        Check the latest FUSE article before creating or updating an ECOVACS case.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="ecovacs-notes-grid">
+
+                <!-- WARNING -->
+
+                <div class="ecovacs-note ecovacs-warning-note">
+
+                    <div class="ecovacs-note-number">
+                        IMPORTANT
+                    </div>
+
+                    <h3 class="ecovacs-note-title">
+                        FUSE IS THE SOURCE OF TRUTH
+                    </h3>
+
+                    <p class="ecovacs-note-text">
+                        Always verify the latest ECOVACS FUSE article before
+                        creating a case. Do not rely on an outdated locally
+                        saved reference.
+                    </p>
+
+                </div>
+
+
+                <!-- NOTE 1 -->
+
+                <div class="ecovacs-note">
+
+                    <div class="ecovacs-note-number">
+                        01
+                    </div>
+
+                    <h3 class="ecovacs-note-title">
+                        CHECK THE MODEL
+                    </h3>
+
+                    <p class="ecovacs-note-text">
+                        Confirm the customer's ECOVACS model against the latest
+                        model reference before proceeding.
+                    </p>
+
+                </div>
+
+
+                <!-- NOTE 2 -->
+
+                <div class="ecovacs-note">
+
+                    <div class="ecovacs-note-number">
+                        02
+                    </div>
+
+                    <h3 class="ecovacs-note-title">
+                        FOLLOW THE LATEST PROCESS
+                    </h3>
+
+                    <p class="ecovacs-note-text">
+                        Case creation requirements and workflows may change.
+                        Always follow the latest instructions published in FUSE.
+                    </p>
+
+                </div>
+
+
+                <!-- NOTE 3 -->
+
+                <div class="ecovacs-note">
+
+                    <div class="ecovacs-note-number">
+                        03
+                    </div>
+
+                    <h3 class="ecovacs-note-title">
+                        VERIFY CUSTOMER DETAILS
+                    </h3>
+
+                    <p class="ecovacs-note-text">
+                        Make sure the required customer, product and case
+                        information is complete before submitting the case.
+                    </p>
+
+                </div>
+
+
+                <!-- NOTE 4 -->
+
+                <div class="ecovacs-note">
+
+                    <div class="ecovacs-note-number">
+                        04
+                    </div>
+
+                    <h3 class="ecovacs-note-title">
+                        CHECK FOR UPDATES
+                    </h3>
+
+                    <p class="ecovacs-note-text">
+                        If the FUSE article has been updated, use the latest
+                        information instead of an older saved reference.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             MODEL REFERENCE BUTTON
+             ========================================= -->
+
+        <div class="model-reference-wrapper">
+
+            <button
+                type="button"
+                class="model-reference-button"
+                id="modelReferenceButton"
+                onclick="toggleModelReference()"
+            >
+
+                <span class="model-reference-button-left">
+
+                    <span class="model-reference-icon">
+                        🖥
+                    </span>
+
+                    <span class="model-reference-label">
+
+                        <strong>
+                            Model Reference
+                        </strong>
+
+                        <span>
+                            ECOVACS model reference
+                        </span>
+
+                    </span>
+
+                </span>
+
+                <span class="model-reference-arrow">
+                    ▼
+                </span>
+
+            </button>
+
+
+            <div
+                class="model-reference-content"
+                id="modelReferenceContent"
+            >
+
+                <div class="model-reference-warning">
+                    ⚠ Always verify the latest model information against the
+                    ECOVACS FUSE article before creating a case.
+                </div>
+
+
+                <!--
+                    MODEL REFERENCE CONTENT
+
+                    The FUSE article supplied is authentication-protected,
+                    so its model list cannot be reliably retrieved from the
+                    public page. Keep this section ready for the exact model
+                    references once they are available from the authenticated
+                    article.
+                -->
+
+                <div class="model-group">
+
+                    <h3 class="model-group-title">
+                        ECOVACS Models
+                    </h3>
+
+                    <div class="model-list">
+
+                        <span class="model-item">
+                            Refer to latest FUSE article
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             ESSENTIAL TOOLS
+             ========================================= -->
+
+        <div class="essential-tools-card">
+
+            <div class="essential-tools-header">
+
+                <h2 class="essential-tools-title">
+                    Essential Tools
+                </h2>
+
+                <p class="essential-tools-subtitle">
+                    Quick access to ECOVACS case creation and reference resources.
+                </p>
+
+            </div>
+
+
+            <div class="essential-tools-list">
+
+
+                <!-- CSS LINK -->
+
+                <a
+                    href="https://css.intra.acer.com.au/ecovas/(S(l0kgrboj2t252yjniebbmqnm))/LoginPage.aspx?code=1.AXIA33VWMDncZkuANLjnqMt5jKfRk0-kxQJCr0hU68GwnPsAABxyAA.BQABBAIAAAADAOz_BQD0_0V2b1N0c0FydGlmYWN0cwIAAAAAAN4a5aoDZyXb6ZejKWlWTvVkhqtc4L_hv7KBhAkkI5AJcCIbzvSG87R6EhinvDS-4WWJsOEIHMRkPPBMjpaCZ6PEWFbcqU7_wbK0uetQYwPNp8fXwdTKym7G33WGjHTLORZpVvSvSEIl8p15eaTun9OZTkAI0zJGYZv7GfKyrL0bZWXfu_2HhMRTLJ5euRJh6OQXVMypquFl3jo7FYTNPCZjZMw6ULGkv6MlcWljvDqu5T9Z8cwqyOs7kLbfP-6kaJMMJHkXALBVJH1-kjkhebqtzwnt3FeAghofjYW3fNfRzgvCYbmB6G7L3CxHO-AyKAF2F0NH32xivpnwB_KkxCTrOG2arG8ygBXGJvwiQo7uwgLF58KCdrTuNL5xFvc_-ZNv02YCXs6fEErIdk3OJsjuiT1VbXRowL_EdCI9f2UE4LArnrIMRS8Dnsajk1Fqtwy04idzunGU-z8KJvl6ZI1pvucHvMZAKLGoUaaVfQEVwPMRFTJxgto2FXe2s7oZmbg_U19l12RnX_J6RDmY4NuLWR6Ct8W-vJaqX5sNNAacw95MN47RAvLR9VgL902K2LlRrSX59_I1BKoLNGmMFS8ooMSMX3A2ejKPPak3GxJdInmbpIK82VfJCnbRJMJ9Xpq5DVr8wFAe9mIX3bQQprIvwkO7WQfmbys5GOJfXM2P5cWoaMkplzAmeWnxnx2ElJDsXE_RUN84d9uU5NaxOzDd3NOlyz-eWmnQAdeOwBRjK9fDBIjhUvH_Vbju1CxoitiefK3JWdPBYft3eM2TUX9xrtraaa9tWXmeZYHJzhH1s1WMR4gdhMD_WGcuNVwwUhslsk5_iZHp8vePNjX7B_mH_nc8SVlI0K44vpbGvkOIeHTwdAQZQq2oJH6K-twHwG7UooF5WZcP-rirtDVBsms4hpJwIdNJZFzOeuZKuxNgxWi7j5923DyHFmGiuja8EC4oQ8e_MN6dp0wvhdbss_bvobmJq66DmhhaWnaSux758a7zY9mLQwTbE5kj1DPOxvv7U&session_state=007dea7a-6fc7-be1f-eb14-4ee25244bb5a"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="essential-tool"
+                >
+
+                    <span class="essential-tool-info">
+
+                        <span class="essential-tool-label">
+                            CSS Link ( ECOVACS )
+                        </span>
+
+                        <span class="essential-tool-description">
+                            Open the ECOVACS CSS case creation portal.
+                        </span>
+
+                    </span>
+
+                    <span class="essential-tool-button">
+                        OPEN
+                    </span>
+
+                </a>
+
+
+                <!-- FUSE ARTICLE -->
+
+                <a
+                    href="https://acerpap.fuseuniversal.com"
+                    rel="noopener noreferrer"
+		    target="_blank"
+                    class="essential-tool"
+                >
+
+                    <span class="essential-tool-info">
+
+                        <span class="essential-tool-label">
+                            FUSE ARTICLE
+                        </span>
+
+                        <span class="essential-tool-description">
+                            Open the latest FUSE reference article.
+                        </span>
+
+                    </span>
+
+                    <span class="essential-tool-button">
+                        OPEN
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         MODEL REFERENCE SCRIPT
+         ========================================= -->
+
+    <script>
+
+        function toggleModelReference() {
+
+            const button =
+                document.getElementById("modelReferenceButton");
+
+            const content =
+                document.getElementById("modelReferenceContent");
+
+            button.classList.toggle("active");
+
+            content.classList.toggle("show");
+
+        }
+
+    </script>
+
+</body>
+</html>

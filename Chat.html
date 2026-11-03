@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHAT ESSENTIALS</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- SUPABASE LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- SUPABASE CONFIGURATION -->
+<script src="supabase-config.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- MAIN PAGE -->
+    <div id="mainPage" class="page active">
+
+        <div class="header-section">
+
+            <div class="left-section">
+
+                <div class="top-area">
+                    <h1>CHAT ESSENTIALS</h1>
+                </div>
+
+                <div class="main-buttons">
+                    <button class="save-btn" onclick="exportAllDocumentation()">SAVE</button>
+                    <button class="clear-btn" onclick="clearAll()">CLEAR ALL</button>
+                    <button class="delete-btn" onclick="deleteData()">DELETE</button>
+                </div>
+
+                <div class="second-buttons">
+                    <button class="templates" onclick="showPage('templatePage')">TEMPLATES</button>
+                    <button class="spiel" onclick="showPage('spielPage')">SPIEL</button>
+                    <button class="documentation" onclick="openDocumentation()">DOCUMENTATION</button>
+                    <button class="information" onclick="openInformation()">INFORMATION</button>
+                </div>
+
+            </div>
+
+            <div class="bible-verse">
+                <div class="verse-heading">✦ DAILY BIBLE VERSE</div>
+                <div id="bibleVerse"></div>
+                <div class="bible-powered">Daily verse</div>
+            </div>
+
+        </div>
+
+        <div class="calendar-container">
+
+            <div class="calendar-header">
+
+                <button class="arrow" onclick="previousMonth()">‹</button>
+
+                <div class="calendar-title">
+                    <h2 id="monthYear"></h2>
+                    <p>PLAN YOUR DAY • COMPLETE YOUR GOALS</p>
+                </div>
+
+                <button class="arrow" onclick="nextMonth()">›</button>
+
+            </div>
+
+            <div class="weekdays">
+                <div class="weekday">SUN</div>
+                <div class="weekday">MON</div>
+                <div class="weekday">TUE</div>
+                <div class="weekday">WED</div>
+                <div class="weekday">THU</div>
+                <div class="weekday">FRI</div>
+                <div class="weekday">SAT</div>
+            </div>
+
+            <div class="calendar" id="calendar"></div>
+
+        </div>
+
+	<div class="ecovacs-link-container">
+
+   		 <a href="ecovacs.html" class="ecovacs-link">
+       			 ECOVACS
+   		 </a>
+		 <a href="rn-creation.html" class="ecovacs-link rn-creation-link">
+        		RN CREATION
+   		 </a>
+		<a href="pop-validation.html" class="ecovacs-link pop-validation-link">
+       			 POP VALIDATION
+    		</a>
+
+	</div>
+
+        <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+
+    <!-- TEMPLATES -->
+    <div id="templatePage" class="page">
+
+        <div class="page-header">
+            <div class="page-title">TEMPLATES</div>
+            <button class="back-button" onclick="showPage('mainPage')">← BACK</button>
+        </div>
+
+        <button class="action-btn save-template-btn" onclick="toggleAddTemplate()">
+            ＋ ADD TEMPLATE
+        </button>
+
+        <div class="add-template-box" id="addTemplateBox">
+
+            <input id="newTemplateTitle" placeholder="Template title">
+
+            <textarea
+                id="newTemplateText"
+                placeholder="Write your template here...">
+            </textarea>
+
+            <div class="template-actions">
+                <button class="action-btn save-template-btn" onclick="addTemplate()">
+                    SAVE TEMPLATE
+                </button>
+
+                <button class="action-btn delete-template-btn" onclick="toggleAddTemplate()">
+                    CANCEL
+                </button>
+            </div>
+
+        </div>
+
+        <div id="templateList"></div>
+
+    </div>
+
+
+    <!-- SPIEL -->
+    <div id="spielPage" class="page">
+
+        <div class="page-header">
+            <div class="page-title">SPIEL</div>
+            <button class="back-button" onclick="showPage('mainPage')">← BACK</button>
+        </div>
+
+        <button class="action-btn save-template-btn" onclick="toggleAddSpiel()">
+            ＋ ADD SPIEL
+        </button>
+
+        <div class="add-spiel-box" id="addSpielBox">
+
+            <input id="newSpielTitle" placeholder="Spiel title">
+
+            <textarea
+                id="newSpielText"
+                class="spiel-text"
+                placeholder="Write your spiel here...">
+            </textarea>
+
+            <div class="spiel-actions">
+
+                <button class="action-btn save-template-btn" onclick="addSpiel()">
+                    SAVE SPIEL
+                </button>
+
+                <button class="action-btn delete-template-btn" onclick="toggleAddSpiel()">
+                    CANCEL
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="spielList"></div>
+
+    </div>
+
+
+    <!-- DOCUMENTATION -->
+    <div id="documentationPage" class="page">
+
+        <div class="page-header">
+            <div class="page-title">DOCUMENTATION</div>
+            <button class="back-button" onclick="showPage('mainPage')">← BACK</button>
+        </div>
+
+        <div class="card">
+
+            <div class="documentation-form">
+
+                <label>Customer Name</label>
+                <input id="docName">
+
+                <label>Contact number</label>
+                <input id="docContact">
+
+                <label>Email</label>
+                <input id="docEmail">
+
+                <label>Concern</label>
+                <textarea id="docConcern"></textarea>
+
+                <label>Resolution Provided</label>
+                <textarea id="docResolution"></textarea>
+
+                <button class="confirm-doc" onclick="confirmDocumentation()">
+                    CONFIRM
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+            <h3>DOCUMENTATION PREVIEW</h3>
+            <div id="documentationPreview" class="doc-result">
+                No documentation created yet.
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>DOCUMENTATION HISTORY</h3>
+            <div id="documentationHistory"></div>
+        </div>
+
+    </div>
+
+
+    <!-- INFORMATION -->
+    <div id="informationPage" class="page">
+
+        <div class="page-header">
+            <div class="page-title">INFORMATION</div>
+            <button class="back-button" onclick="showPage('mainPage')">← BACK</button>
+        </div>
+
+
+        <div class="info-section">
+
+            <div class="info-section-header info-email-header">
+                <span class="info-section-title info-email-title">
+                    EMAIL INFORMATION
+                </span>
+            </div>
+
+            <div class="info-section-body">
+
+                <div class="info-add-box">
+
+                    <div class="info-add-row">
+
+                        <input
+                            type="email"
+                            id="infoEmailInput"
+                            placeholder="Enter email address"
+                            autocomplete="off">
+
+                        <button
+                            class="info-add-button"
+                            onclick="addInformationEmail()">
+                            ADD
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="info-list" id="infoEmailList"></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <div class="info-section-header info-phone-header">
+                <span class="info-section-title info-phone-title">
+                    FRONTLINE / TECHNICAL SUPPORT NUMBERS
+                </span>
+            </div>
+
+            <div class="info-section-body">
+
+                <div class="info-add-box">
+
+                    <div class="info-add-row">
+
+                        <input
+                            type="text"
+                            id="infoPhoneLabel"
+                            placeholder="Label e.g. Technical Support"
+                            class="info-edit-label"
+                            autocomplete="off">
+
+                        <select id="infoPhoneRegion">
+                            <option value="AU">AU</option>
+                            <option value="NZ">NZ</option>
+                        </select>
+
+                        <input
+                            type="tel"
+                            id="infoPhoneInput"
+                            placeholder="Enter phone number"
+                            autocomplete="off">
+
+                        <button
+                            class="info-add-button"
+                            onclick="addInformationPhone()">
+                            ADD
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="info-list" id="infoPhoneList"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TASK OVERLAY -->
+<div class="overlay" id="overlay"></div>
+
+
+<!-- TASK MODAL -->
+<div class="modal" id="taskPanel">
+
+    <button class="close-button" onclick="closeTasks()">✕</button>
+
+    <h2 id="selectedDateTitle">Tasks</h2>
+
+    <p class="modal-subtitle">
+        Complete your daily workflow.
+    </p>
+
+
+    <div class="daily-progress">
+
+        <div class="progress-top">
+
+            <span class="progress-label">
+                DAILY PROGRESS
+            </span>
+
+            <span class="progress-percent" id="overallPercent">
+                0%
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            🎉 100% TASK DONE!
+        </div>
+
+    </div>
+
+
+    <!-- RETAIL -->
+    <div class="task-section">
+
+        <div class="section-header retail-header">
+
+            <span class="section-title retail-title">
+                NCC RETAIL PENDING
+            </span>
+
+            <span class="section-progress" id="retailProgress">
+                0%
+            </span>
+
+        </div>
+
+        <div class="section-body">
+
+            <div class="single-task">
+
+                <input
+                    type="checkbox"
+                    id="retailCheckbox"
+                    onchange="toggleRetail()">
+
+                <label for="retailCheckbox">
+                    Retail Pending Completed
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHTNOW -->
+    <div class="task-section">
+
+        <div class="section-header rightnow-header">
+
+            <span class="section-title rightnow-title">
+                RIGHTNOW
+            </span>
+
+            <span class="section-progress" id="rightnowProgress">
+                0%
+            </span>
+
+        </div>
+
+        <div class="section-body">
+
+            <div class="add-number">
+
+                <input
+                    type="text"
+                    id="rnInput"
+                    placeholder="Enter RN: 261006-000225"
+                    maxlength="13">
+
+                <button
+                    class="rn-add-button"
+                    onclick="addRN()">
+                    ADD
+                </button>
+
+            </div>
+
+            <div class="number-list" id="rnList"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- EOD -->
+    <div class="task-section">
+
+        <div class="section-header eod-header">
+
+            <span class="section-title eod-title">
+                EOD
+            </span>
+
+            <span class="section-progress" id="eodProgress">
+                0%
+            </span>
+
+        </div>
+
+        <div class="section-body">
+
+            <div class="single-task">
+
+                <input
+                    type="checkbox"
+                    id="eodCheckbox"
+                    onchange="toggleEOD()">
+
+                <label for="eodCheckbox">
+                    EOD Completed
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- POP -->
+    <div class="task-section">
+
+        <div class="section-header pop-header">
+
+            <span class="section-title pop-title">
+                POP VALIDATION
+            </span>
+
+            <span class="section-progress" id="popProgress">
+                0%
+            </span>
+
+        </div>
+
+        <div class="section-body">
+
+            <div class="single-task">
+
+                <input
+                    type="checkbox"
+                    id="noPopCheckbox"
+                    onchange="toggleNoPOP()">
+
+                <label for="noPopCheckbox">
+                    No POP Assigned
+                </label>
+
+            </div>
+
+            <div class="add-number">
+
+                <input
+                    type="text"
+                    id="popInput"
+                    placeholder="Enter POP number">
+
+                <button
+                    class="pop-add-button"
+                    onclick="addPOP()">
+                    ADD
+                </button>
+
+            </div>
+
+            <div class="number-list" id="popList"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="notification" id="notification"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- SUPABASE CONFIGURATION -->
+<script src="supabase-config.js"></script>
+
+<!-- SUPABASE BRIDGE -->
+<script src="supabase-bridge.js"></script>
+
+<!-- SUPABASE AUTHENTICATION -->
+<script src="supabase-auth.js"></script>
+
+<script src="index.js"></script>
+
+
+</body>
+</html>
